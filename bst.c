@@ -18,42 +18,42 @@ struct node {
 struct node *root = NULL;
 
 struct node **tree_search(struct node **candidate, int value) {
-    if(((**candidate).key < value)&&((**candidate).right != NULL)){
-            return tree_search(&(**candidate).right, value);
+    if(((**candidate).key < value)&&((**candidate).right != NULL)){            // Sprawdz czy szukany element jest mniejszy czy
+            return tree_search(&(**candidate).right, value);                   // większy od węzła i przejdz w dół odpowiednio 
+    }                                                                          // w lewą lub prawą strone
+    if(((**candidate).key > value)&&((**candidate).left != NULL)){             //
+            return tree_search(&(**candidate).left, value);                    //
     }
-    if(((**candidate).key > value)&&((**candidate).left != NULL)){
-            return tree_search(&(**candidate).left, value);
-    }
-    if ((**candidate).key == value){
+    if ((**candidate).key == value){                                           
            return candidate;
     }
     
 }
 
 struct node* tree_insert(int value) {
-    new_component = (struct node*) malloc(sizeof(struct node));
-        (*new_component).key = value;
-        (*new_component).left = NULL;
-        (*new_component).right = NULL;
+    new_component = (struct node*) malloc(sizeof(struct node));        // Stwórz wezeł 
+        (*new_component).key = value;                                  // Nadaj mu wartość
+        (*new_component).left = NULL;                                  // Określ ze nie ma lewego 
+        (*new_component).right = NULL;                                 // ani prawego potomka
     
-    if (root == NULL){ 
-        root = new_component;
+    if (root == NULL){                                                 // Przypadek kiedy drzewo jest puste
+        root = new_component;                                          
     }else{
         struct node *struct_operational = root;
         While(1==1){
-            if(((*struct_operational).key >= value)&&((*struct_operational).left) != NULL){
-                struct_operational = (*struct_operational).left;
-            }
-            else if(((*struct_operational).key <= value)&&((*struct_operational).right) != NULL){
-                struct_operational = (*struct_operational).right;
-            }
-            else if((*struct_operational).key <= value){
-                (*struct_operational).right = new_component;
-                return NULL;
-                
-            }else{
-                (*struct_operational).left = new_component;
-                return NULL;
+            if(((*struct_operational).key >= value)&&((*struct_operational).left) != NULL){             // Część w której
+                struct_operational = (*struct_operational).left;                                        // szukamy miejsca na
+            }                                                                                           // nowy węzeł
+            else if(((*struct_operational).key <= value)&&((*struct_operational).right) != NULL){       // 
+                struct_operational = (*struct_operational).right;                                       // 
+            }                                                                                            
+            else if((*struct_operational).key <= value){                                                // Dodanie węzła              
+                (*struct_operational).right = new_component;                                            // do drzewa
+                return NULL;                                                                            //     
+                                                                                                        //
+            }else{                                                                                      //
+                (*struct_operational).left = new_component;                                             //
+                return NULL;                                                                            //
             }
             }
 
@@ -64,9 +64,9 @@ struct node* tree_insert(int value) {
 
 
 
-struct node **tree_maximum(struct node **candidate) {
-    if ((**candidate).right != NULL){
-        return tree_maximum(&(**candidate).right);
+struct node **tree_maximum(struct node **candidate) {                     //Szukanie najwiekszej wartosci
+    if ((**candidate).right != NULL){                                     //polega na schodzeniu w drzewie
+        return tree_maximum(&(**candidate).right);                        //w prawą strone tak długo jak to mozliwe
     }
     
     
@@ -74,28 +74,28 @@ struct node **tree_maximum(struct node **candidate) {
 }
 
 void tree_delete(int value) {
-    candidate =  tree_search(&root, value);
-    if ((**candidate).left == NULL && (**candidate).right == NULL){
+    candidate =  tree_search(&root, value);                                       //Szukam gdzie znajduje się wartość która chce skasowac
+    if ((**candidate).left == NULL && (**candidate).right == NULL){               // Przypadek kiedy nie ma potomków-po prostu usuwam węzeł
         *candidate = NULL;
-    }else if (((**candidate).left != NULL) && ((**candidate).right == NULL)){
-        *candidate = (**candidate).left;
-    }else if (((**candidate).left == NULL) && ((**candidate).right != NULL)){
-        *candidate = (**candidate).right;
-    }else{
+    }else if (((**candidate).left != NULL) && ((**candidate).right == NULL)){     // Istnieje lewy potomek ale nie istnieje prawy - usuwam węzeł a w jego miejsce
+        *candidate = (**candidate).left;                                          // wchodzi lewy potomek
+    }else if (((**candidate).left == NULL) && ((**candidate).right != NULL)){     // Istnieje prawy potomek ale nie istnieje lewy - 
+        *candidate = (**candidate).right;                                         //analogicznie jak w przypadku wyzej
+    }else{                                                //sytuacja gdzie usuwany węzeł ma dwóch potomków
         struct node **maxcandidate;
-        maxcandidate = tree_maximum(&(**candidate).left);
-        (**candidate).key = (**maxcandidate).key;
-        if ((**maxcandidate).left != NULL){
-        *maxcandidate = (**maxcandidate).left;
+        maxcandidate = tree_maximum(&(**candidate).left); //szukam wartości maksymalnej w lewym poddrzewie
+        (**candidate).key = (**maxcandidate).key;         // Zastepuje usuwaną wartość prędzej znalezionym maksem w lewym poddrzewie
+        if ((**maxcandidate).left != NULL){               // Jeśli szukana maksymalna wartosc w lewym poddrzewie miała lewogo potomka
+        *maxcandidate = (**maxcandidate).left;            // To ten potomek wskakuje na miejsce rodzica
         }
     }
 }
 
 unsigned int tree_size(struct node *element) {
-    if(element == NULL){
+    if(element == NULL){                      // Sytuacja gdy drzewo jest puste
         return 0;
     }else{
-      return 1 + tree_size((*element).left) + tree_size((*element).right);
+      return 1 + tree_size((*element).left) + tree_size((*element).right); //Zliczaj elementy schodząc "Piętrami"
     }
 }
 
