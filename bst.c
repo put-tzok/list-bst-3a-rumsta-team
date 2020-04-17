@@ -31,6 +31,7 @@ struct node **tree_search(struct node **candidate, int value) {
 }
 
 struct node* tree_insert(int value) {
+    struct node *new_component;                                        // deklaracja 
     new_component = (struct node*) malloc(sizeof(struct node));        // Stwórz wezeł 
         (*new_component).key = value;                                  // Nadaj mu wartość
         (*new_component).left = NULL;                                  // Określ ze nie ma lewego 
@@ -40,7 +41,7 @@ struct node* tree_insert(int value) {
         root = new_component;                                          
     }else{
         struct node *struct_operational = root;
-        While(1==1){
+        while(1==1){
             if(((*struct_operational).key >= value)&&((*struct_operational).left) != NULL){             // Część w której
                 struct_operational = (*struct_operational).left;                                        // szukamy miejsca na
             }                                                                                           // nowy węzeł
@@ -74,7 +75,7 @@ struct node **tree_maximum(struct node **candidate) {                     //Szuk
 }
 
 void tree_delete(int value) {
-    candidate =  tree_search(&root, value);                                       //Szukam gdzie znajduje się wartość która chce skasowac
+    struct node **candidate =  tree_search(&root, value);                                       //Szukam gdzie znajduje się wartość która chce skasowac
     if ((**candidate).left == NULL && (**candidate).right == NULL){               // Przypadek kiedy nie ma potomków-po prostu usuwam węzeł
         *candidate = NULL;
     }else if (((**candidate).left != NULL) && ((**candidate).right == NULL)){     // Istnieje lewy potomek ale nie istnieje prawy - usuwam węzeł a w jego miejsce
