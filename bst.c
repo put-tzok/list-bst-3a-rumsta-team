@@ -18,29 +18,85 @@ struct node {
 struct node *root = NULL;
 
 struct node **tree_search(struct node **candidate, int value) {
-    // TODO: implement
-    return NULL;
+    if(((**candidate).key < value)&&((**candidate).right != NULL)){
+            return tree_search(&(**candidate).right, value);
+    }
+    if(((**candidate).key > value)&&((**candidate).left != NULL)){
+            return tree_search(&(**candidate).left, value);
+    }
+    if ((**candidate).key == value){
+           return candidate;
+    }
+    
 }
 
 struct node* tree_insert(int value) {
-    // TODO: implement
-    return NULL;
+    new_component = (struct node*) malloc(sizeof(struct node));
+        (*new_component).key = value;
+        (*new_component).left = NULL;
+        (*new_component).right = NULL;
+    
+    if (root == NULL){ 
+        root = new_component;
+    }else{
+        struct node *struct_operational = root;
+        While(1==1){
+            if(((*struct_operational).key >= value)&&((*struct_operational).left) != NULL){
+                struct_operational = (*struct_operational).left;
+            }
+            else if(((*struct_operational).key <= value)&&((*struct_operational).right) != NULL){
+                struct_operational = (*struct_operational).right;
+            }
+            else if((*struct_operational).key <= value){
+                (*struct_operational).right = new_component;
+                return NULL;
+                
+            }else{
+                (*struct_operational).left = new_component;
+                return NULL;
+            }
+            }
+
+        }
 }
+
+
 
 
 
 struct node **tree_maximum(struct node **candidate) {
-    // TODO: implement
-    return NULL;
+    if ((**candidate).right != NULL){
+        return tree_maximum(&(**candidate).right);
+    }
+    
+    
+    return candidate;
 }
 
 void tree_delete(int value) {
-    // TODO: implement
+    candidate =  tree_search(&root, value);
+    if ((**candidate).left == NULL && (**candidate).right == NULL){
+        *candidate = NULL;
+    }else if (((**candidate).left != NULL) && ((**candidate).right == NULL)){
+        *candidate = (**candidate).left;
+    }else if (((**candidate).left == NULL) && ((**candidate).right != NULL)){
+        *candidate = (**candidate).right;
+    }else{
+        struct node **maxcandidate;
+        maxcandidate = tree_maximum(&(**candidate).left);
+        (**candidate).key = (**maxcandidate).key;
+        if ((**maxcandidate).left != NULL){
+        *maxcandidate = (**maxcandidate).left;
+        }
+    }
 }
 
 unsigned int tree_size(struct node *element) {
-    // TODO: implement
-    return 0;
+    if(element == NULL){
+        return 0;
+    }else{
+      return 1 + tree_size((*element).left) + tree_size((*element).right);
+    }
 }
 
 /*
